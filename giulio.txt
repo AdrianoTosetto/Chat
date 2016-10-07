@@ -1,0 +1,22 @@
+Escopo: chat
+
+Nível: meta de usuário
+
+Ator primário: usuário
+
+Stakeholders e seus interesses:
+	Usuário: deseja enviar uma mensagem para outro usuário.
+
+Pré-condições: o usuário está cadastrado e logado no chat.
+
+Pós-condições: a mensagem é enviada ao destinatário e ao banco de dados e aparece na janela de chat.
+
+Fluxo básico:
+	1. o usuário seleciona o destinatário na janela de contatos;
+	2. o sistema carrega as mensagens dessa conversa e a exibe na janela de chat;
+	3. o usuário digita sua mensagem na janela de chat e a envia apertando Enter ou o botão Send;
+	4. o sistema envia a mensagem para o banco de dados e este a envia para o destinatário;
+	5. o sistema mostra a mensagem na janela de chat para ambos os usuários;
+
+Extensões:
+	*a. 

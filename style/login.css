@@ -1,0 +1,50 @@
+ 		
+ 		*{
+ 			background-color:#4fd8EF;
+			background-image: linear-gradient(to bottom, transparent, rgba(0,0,0,.3));
+ 			padding:0;
+ 		}
+		.wrapper{
+			position:absolute;
+			margin-top:10px;
+			height:50%;
+			width:95%;
+			display: -webkit-flex;
+		 	display: flex;
+		  	-webkit-align-items: center;
+		 	align-items: center;
+		 	-webkit-justify-content: center;
+		  	justify-content: center;
+		  	background:rgba(0,0,0,0);
+		}
+		.wrapper div{
+			border: 1px solid rgba(0, 0, 0, .3);
+			padding:10px;
+			height:100%;
+			width:30%;
+			background:#FFF;
+			border-radius:5px;
+		}
+		input{
+			height:45px;
+			display:block;
+			margin:5px 0 5px 0;
+			background:#FFF;
+			padding:8px;
+		}
+		.container-sign-in{
+			display:none;
+		}
+		h3{
+			color:rgba(0,0,0,.7);
+			text-shadow:1px 1px 1px rgba(0,0,0,.2);
+		}
+		form, h3, a{
+			background:#FFF;
+		}
+		form, h3{
+			position:relative;
+			left:30%;
+			width:70%;
+			background:#FFF;
+		}
