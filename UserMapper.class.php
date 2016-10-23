@@ -1,11 +1,11 @@
 <?php
 	require_once("database.class.php");
-	require_once("usuario.class.php");
+	require_once("Model/usuario.class.php");
 	class UserMapper{
 		private $dataBase;
 		private $user;
 		public function __construct($user){
-			$this->dataBase = new DataBase("usuarios","root","");
+			$this->dataBase = DataBase::getInstance();
 			$this->dataBase->connect();
 			$this->user = $user;
 		}
@@ -31,12 +31,16 @@
 						[[$this->user->getId(),$otherUser->getId()],[$otherUser->getId(),$this->user->getId()]],["=","="],
 						["OR"]);
 			for($i = 0; $i < count($messages); $i++) {
-				$messagesArray->append(new Message(
-												$messages[$i]['id'],
-												$messages[$i]['text'],
-												$messages[$i]['id_user_sent'],
-												$messages[$i]['id_user_received'],
-												$messages[$i]['data']));
+				   		$m = new Message($messages[$i]['id'],
+										 $messages[$i]['text'],
+										 $messages[$i]['id_user_sent'],
+										 $messages[$i]['id_user_received'],
+										 $messages[$i]['data']);
+						$m->setImageURL($messages[$i]['image_url']);
+						if(strlen($m->getImageURL()) == 0):
+							$m->setImageURL(null);
+						endif;
+						$messagesArray->append($m);
 			}
 			return $messagesArray;
 		}

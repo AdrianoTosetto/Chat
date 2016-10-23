@@ -6,6 +6,7 @@ function updateChat(){
 	var url = "HTTPRequestManager.php?idSent="+id1+"&idReceived=" + id2;
     $.get(url, function(data) {
         $('.chat-body').html(data);
+        //alert(data);
         scrollChatDown();
         setTimeout(updateChat,5000);
     });

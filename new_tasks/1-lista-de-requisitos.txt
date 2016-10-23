@@ -1,0 +1,13 @@
+verificar tamanho da imagem ok
+se é do tipo certo ok
+se funciona a gravação
+resolver o problema do diretorio publico
+usuario online
+historico de acesso
+upload da imagem via chat ok
+colocar em singleton quase lá
+
+
+quarta iteração
+
+permitir trocar a imagem de perfil e redimensionar automaticamente - primeiros passos

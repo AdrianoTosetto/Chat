@@ -158,7 +158,7 @@ button:hover{
 
 .management-account{
 	height:500px;
-	width:300px;
+	width:250px;
 	background: #FFF;
 	position:absolute;
 	display:block;
@@ -166,7 +166,7 @@ button:hover{
 	padding:10px;
 }
 .management-account input, a,.status-button{
-	width:300px;
+	width:250px;
 	color:#000;
 	background:none;
 	margin-bottom:4px;
@@ -180,6 +180,7 @@ button:hover{
 .status-button, .status-input, input[type="text"]{
 	background:none;
 	height:30px;
+
 }
 .input-hidden{
 	visibility:hidden;
@@ -193,4 +194,33 @@ button:hover{
 .management-account-title{
 	background:none !important;
 	text-align:center;
+}
+.menu-chat{
+	position:absolute;
+	height:100px;
+	width:150px;
+	border:1px solid #CCC;
+	background:#EEE;
+	z-index:1000;
+	float:right;
+	top:6%;
+	left:95%;
+}
+ul{
+	background:none;
+	margin-left:2px;
+}
+ul li{
+	list-style-type:none;
+	margin:0px 3px 5px 2px;
+	background:none;
+}
+ul li a{
+	text-decoration:none;
+}
+ul li a:hover{
+	text-decoration:underline;
+}
+.icon{
+	background:none;
 }

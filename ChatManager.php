@@ -1,15 +1,23 @@
 <?php
 	require_once('UserMapper.class.php');
-	require_once('date.class.php');
-	require_once('message.class.php');
+	require_once('Model/date.class.php');
+	require_once('Model/message.class.php');
 	require_once('database.class.php');
-	require_once('usuario.class.php');
+	require_once('Model/usuario.class.php');
 	require_once('MessageMapper.class.php');
 	class ChatManager{
 
 		private $userMapper;
-		private $messageMapper;
-		public function __construct(){}
+		public  $messageMapper;
+		private $imageMapper;
+		private static $singletonLog;
+		public function getInstance(){
+			if(self::$singletonLog === null):
+				self::$singletonLog = new ChatManager();
+			endif;
+			return self::$singletonLog;
+		}
+		private function __construct(){}
 		public function insertMessage($message){ //$message => Tipo Message
 			$this->messageMapper = new MessageMapper($message);
 			$this->messageMapper->mapAndInsert();
@@ -19,6 +27,10 @@
 			//$dataBase->insertRow("mensagem", ["text","id_user_sent","id_user_received","data"],
 			//				 [$message->getText(),$message->getUserSentId(),$message->getUserReceivedId(), ""]);
 		}
+		public function moveImageToDirectory($files,$path,$imageName){
+			$this->imageMapper = new ImageMapper($files,200,["png"]);
+			$this->imageMapper->mapAndMoveToDirectory("media/images",$imageName);
+		}
 		public function loadConversation($userSent, $userReceived){
 			$this->userMapper = new UserMapper($userSent);
 			$messages = new ArrayObject();
@@ -26,10 +38,20 @@
 			$html = "";
 			for($i = 0; $i < count($messages); $i++){
 				if($userSent->getId() == $messages[$i]->getUserSentId() && $userReceived->getId() == $messages[$i]->getUserReceivedId()){
-					$html .=  '<div class="sender">'.$messages[$i]->getText()."</div>";
+						if(!is_null($messages[$i]->getImageURL())):
+							$url = $messages[$i]->getImageURL();
+							$html .= '<div class="sender"><img width="250" height="250" src="'.$url.'"/></div>';
+						else:
+							$html .= '<div class="sender">'.$messages[$i]->getText()."</div>";
+						endif;
 				}
 				if($userReceived->getId() == $messages[$i]->getUserSentId() && $userSent->getId()== $messages[$i]->getUserReceivedId()){
-						$html .= '<div class="receiver">'.$messages[$i]->getText()."</div>";
+						if(!is_null($messages[$i]->getImageURL())):
+							$url = $messages[$i]->getImageURL();
+							$html .= '<div class="receiver"><img width="250" height="250" src="'.$url.'"/></div>';
+						else:
+							$html .= '<div class="receiver">'.$messages[$i]->getText()."</div>";
+						endif;
 				}
 			}
 			return $html;
@@ -51,6 +73,9 @@
 		public function getStatus($user){
 			$this->userMapper = new UserMapper($user);
 			return $this->userMapper->mapAndGetStatusByUser();	
+		}
+		public function uploadImage(){
+			
 		}
 	}
 ?>

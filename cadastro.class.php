@@ -1,6 +1,6 @@
 <?php
 	require_once('UserMapper.class.php');
-	require_once('usuario.class.php');
+	require_once('Model/usuario.class.php');
 	class Cadastro{
 		private $user;  //Tipo Usuario
 		private $userMapper; //Tipo UserMapper

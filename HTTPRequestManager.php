@@ -1,13 +1,25 @@
  <?php
  	 require_once('ChatManager.php');
- 	 require_once('usuario.class.php');
- 	 require_once('message.class.php');
- 	 require_once('date.class.php');
+ 	 require_once('Model/usuario.class.php');
+ 	 require_once('Model/message.class.php');
+ 	 require_once('Model/date.class.php');
+ 	 require_once('ImageMapper.php');
 	 class HTTPRequestManager{
+
+	 	private static $instance;
+
 	 	private $chatManager;
 
-	 	public function __construct(){
-	 		$this->chatManager = new ChatManager();
+	 	private function __construct(){
+	 		$this->chatManager = ChatManager::getInstance();
+	 	}
+
+	 	public function getInstance(){
+	 		if(self::$instance === null):
+	 			self::$instance = new HTTPRequestManager();
+	 		endif;
+
+	 		return self::$instance;
 	 	}
 
 	 	public function translateHTTPRequests(){
@@ -31,16 +43,37 @@
 	 			$idUserSent = $_GET['idUserSent'];
 	 			$idUserReceived = $_GET['idUserReceived'];
 	 			$message = new Message(null, $text, $idUserSent, $idUserReceived, null);
+	 			echo $_GET['idUserSent'];
+	 			if(isset($_FILES['upload_files'])) {
+	 				echo "entrou";
+	 				if(move_uploaded_file($_FILES['upload_file']['tmp_name'], "media/images/" . $_FILES['upload_file']['name'])){
+	 					$path = $_FILES['image']['name'];
+						$ext = pathinfo($path, PATHINFO_EXTENSION);
+	 					$imageName = "media/images/" . $_GET['idUserSent'] . '-'.$_GET['idUserReceived'] . time() . $ext;
+	 					$message->setMessage(null);
+	 				}
+	 			}
 	 			$this->chatManager->insertMessage($message);
 	 		endif;
-	 		if(isset($_GET['getStatusById'])) {
+	 		if(isset($_POST['text']) && isset($_POST['idUserSent']) && isset($_POST['idUserReceived'])):
+	 			$message = new Message(null, $_POST['text'], $_POST['idUserSent'],$_POST['idUserReceived'], null);
+	 			$path = $_FILES['upload_file']['name'];
+				$ext = pathinfo($path, PATHINFO_EXTENSION);
+	 			$imageURL = $_POST['idUserSent'] . '-'.$_POST['idUserReceived']. '-' . time() . '.' .$ext;
+	 			$this->chatManager->moveImageToDirectory($_FILES['upload_file'],"media/images",$imageURL);
+	 			//$mapper = new ImageMapper($_FILES['upload_file'],200,[".png"]);
+	 			//$mapper->mapAndMoveToDirectory("media/images",$imageURL);
+	 			$message->setImageURL("media/images/".$imageURL);
+	 			$this->chatManager->insertMessage($message);
+	 		endif;
+	 		if(isset($_GET['getStatusById'])):
 	 			$user = new Usuario(null,null,null);
 	 			$user->setId($_GET['getStatusById']);
 	 			echo $this->chatManager->getStatus($user);
 	 			
-	 		}
+	 		endif;
 	 	}
 	 }
-	 $httpRM = new HTTPRequestManager();
+	 $httpRM = HTTPRequestManager::getInstance();
 	 $httpRM->translateHTTPRequests();
 ?>

@@ -4,10 +4,19 @@
  		private $root;
  		private $dbname;
  		private $pdoConnection;
- 		function __construct($dbname, $root, $pass){ //Construtor
+ 		private static $instance;
+
+ 		private function __construct($dbname="usuarios", $root="root", $pass=""){ //Construtor
  			$this->pass   = $pass;
  			$this->root   = $root;
  			$this->dbname = $dbname;
+ 		}
+ 		public function getInstance(){
+ 			if(self::$instance === null):
+ 				self::$instance = new DataBase();
+ 			endif;
+
+ 			return self::$instance;
  		}
  		public function connect() {
  			$sqlConnectString       = "mysql:dbhost=localhost;dbname=".$this->dbname;
