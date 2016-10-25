@@ -5,19 +5,26 @@
  		
  		private $dataBase;
  		private $message;
+ 		private static $instance;
  		public function __construct($m){
  			$this->dataBase = Database::getInstance();
  			$this->dataBase->connect();
  			$this->message = $m;
  		}
- 		
- 		public function mapAndInsert(){
- 			if($this->message->getImageURL() == null):
+ 		public function getInstance(){
+ 			if(self::$instance === null):
+ 				self::$instance = new MessageMapper(null);
+ 			endif;
+
+ 			return self::$instance;
+ 		}
+ 		public function mapAndInsert($message){
+ 			if($message->getImageURL() == null):
  				$this->dataBase->insertRow("mensagem", ["text","id_user_sent","id_user_received","data"],
-							 [$this->message->getText(),$this->message->getUserSentId(),$this->message->getUserReceivedId(), ""]);
+							 [$message->getText(),$message->getUserSentId(),$message->getUserReceivedId(), ""]);
 				else:
 				$this->dataBase->insertRow("mensagem", ["text","id_user_sent","id_user_received","data","image_url"],
-							 [$this->message->getText(),$this->message->getUserSentId(),$this->message->getUserReceivedId(), "",$this->message->getImageURL()]);
+							 [$message->getText(),$message->getUserSentId(),$message->getUserReceivedId(), "",$message->getImageURL()]);
 			endif;
  		}
  	}

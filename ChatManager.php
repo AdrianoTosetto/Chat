@@ -5,11 +5,13 @@
 	require_once('database.class.php');
 	require_once('Model/usuario.class.php');
 	require_once('MessageMapper.class.php');
-	class ChatManager{
+	require_once('Model/File.class.php');
+
+	class ChatManager {
 
 		private $userMapper;
 		public  $messageMapper;
-		private $imageMapper;
+		private $fileMapper;
 		private static $singletonLog;
 		public function getInstance(){
 			if(self::$singletonLog === null):
@@ -19,17 +21,27 @@
 		}
 		private function __construct(){}
 		public function insertMessage($message){ //$message => Tipo Message
-			$this->messageMapper = new MessageMapper($message);
-			$this->messageMapper->mapAndInsert();
+			$this->messageMapper = MessageMapper::getInstance();
+			$this->messageMapper->mapAndInsert($message);
 			//MapeadorMensagem->insert($message);
 			//echo $message->getText();
 			//$dataBase = new DataBase("usuarios","root","");
 			//$dataBase->insertRow("mensagem", ["text","id_user_sent","id_user_received","data"],
 			//				 [$message->getText(),$message->getUserSentId(),$message->getUserReceivedId(), ""]);
 		}
-		public function moveImageToDirectory($files,$path,$imageName){
-			$this->imageMapper = new ImageMapper($files,200,["png"]);
-			$this->imageMapper->mapAndMoveToDirectory("media/images",$imageName);
+		public function moveImageToDirectory($files,$maxSize,$extensions,$path,$imageName){
+			$this->fileMapper = null; //Mapeador vai mapear um arquivo
+			
+			if(strcmp((explode(".",$files['name']))[1],"txt") != 0):
+					$imageFile = new File($imageName,null);
+					$this->fileMapper = ImageMapper::getInstance();
+			endif;
+			if(strcmp((explode(".",$files['name']))[1],"txt") == 0):
+					$imageFile = new File($imageName,null);
+					$this->fileMapper = TextFileMapper::getInstance();
+			endif;
+			
+			$this->fileMapper->mapAndMoveToDirectory($files,200,["png"],$imageFile);
 		}
 		public function loadConversation($userSent, $userReceived){
 			$this->userMapper = new UserMapper($userSent);
@@ -74,8 +86,9 @@
 			$this->userMapper = new UserMapper($user);
 			return $this->userMapper->mapAndGetStatusByUser();	
 		}
-		public function uploadImage(){
-			
+		public function updateUsageStatus($user,$newUsageStatus){
+			$this->userMapper = new UserMapper(null);
+			$this->userMapper->mapAndUpdateUsageStatus($user,$newUsageStatus);
 		}
 	}
 ?>

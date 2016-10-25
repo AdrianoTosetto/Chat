@@ -70,5 +70,8 @@
 			$rows = $this->dataBase->getRows("usuarios",["status"],["id"],[$this->user->getId()],"=");
 			return $rows[0]['status'];
 		}
+		public function mapAndUpdateUsageStatus($user,$newUsageStatus){
+			$this->dataBase->updateRow("usuarios",["usageStatus"],[$newUsageStatus],$user->getId());
+		}
 	}
 ?>

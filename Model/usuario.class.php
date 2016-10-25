@@ -6,17 +6,12 @@
 		private $URLPic;
 		private $id;
 		private $status;
-		private static $instance;
+		private $usageStatus;
+		
 		public function __construct($nome, $login, $senha){
 			$this->nome  = $nome;
 			$this->login = $login;
 			$this->senha = $senha;
-		}
-		public function getInstance(){
-			if(self::$instance === null):
-				self::$instance = new Usuario(null,null,null);
-			endif;
-			return self::$instance;
 		}
 		public function setNome($nome){
 			$this->nome = $nome;
@@ -53,6 +48,12 @@
 		}
 		public function getStatus(){
 			return $this->status;
+		}
+		public function setUsageStatus($usageStatus){
+			$this->usageStatus = $usageStatus;
+		}
+		public function getUsageStatus(){
+			return $this->usageStatus;
 		}
 	}
 ?>

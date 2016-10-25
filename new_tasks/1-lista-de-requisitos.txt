@@ -5,7 +5,7 @@ resolver o problema do diretorio publico
 usuario online
 historico de acesso
 upload da imagem via chat ok
-colocar em singleton quase lá
+colocar em singleton quase quase lá
 
 
 quarta iteração

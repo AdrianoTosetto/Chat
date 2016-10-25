@@ -38,6 +38,18 @@ $(document).ready(function(){
  				$('.status-input').toggleClass("input-hidden");
  				$('.status-button').toggleClass("button-hidden");
  			});
+			$( window ).on('unload',function() {
+					var url = "HTTPRequestManager.php?logout=true&userId=" + $('.chat-container').attr('id');
+			  	 	$.ajax(url, {
+					    success: function(data) {
+					     		alert()
+					    },
+					    error: function() {
+					        alert('Errou');
+					    },
+					    async:false
+				    });
+			});
  			$('.user').click(function(){
  				$('.friend-name').text($(this).text());
  				var idSent = $('.chat-container').attr('id');
